@@ -4,8 +4,7 @@ import { HiPencil } from "react-icons/hi";
 import Modal from "react-modal";
 import TodoForm from "./TodoForm";
 
-Modal.setAppElement("#root");
-function Todo({ todo, toggleComplete, removeTodo, updateTodo }) {
+function Todo({ todo, toggleComplete, removeTodo, updateTodo, handleChange }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   function handleCheckboxClick() {
@@ -16,11 +15,13 @@ function Todo({ todo, toggleComplete, removeTodo, updateTodo }) {
     removeTodo(todo.id);
   }
 
+  /** wip */
   const [edit, handleEdit] = useState({
     id: null,
     value: "",
   });
 
+  /** wip */
   const submitUpdate = (value) => {
     updateTodo(edit.id, value);
     handleEdit({
@@ -35,6 +36,7 @@ function Todo({ todo, toggleComplete, removeTodo, updateTodo }) {
 
   return (
     <div style={{ display: "flex" }}>
+      {/** style for completed task */}
       <input type="checkbox" onClick={handleCheckboxClick} />
       <li
         className="todo-row"
@@ -44,6 +46,7 @@ function Todo({ todo, toggleComplete, removeTodo, updateTodo }) {
         }}
       >
         {todo.task}
+        {/** React-Icons for interacting with form */}
         <div
           className="icons"
           style={{
@@ -54,6 +57,7 @@ function Todo({ todo, toggleComplete, removeTodo, updateTodo }) {
           <GrTrash onClick={handleRemoveClick} />
         </div>
       </li>
+      {/** Modal "pop-up" window when editing task */}
       <Modal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}>
         <h2>Edit Task</h2>
         <div>
@@ -62,14 +66,12 @@ function Todo({ todo, toggleComplete, removeTodo, updateTodo }) {
               input
               name="task"
               type="text"
-              value={handleEdit.value}
-              onChange={handleEdit}
+              value={todo.task}
+              onChange={handleChange}
               className="todo-input"
             />
             <button
-              onClick={() =>
-                submitUpdate({ id: todo.id, value: handleEdit.value })
-              }
+              onClick={() => submitUpdate({ id: todo.id, value: todo.value })}
             >
               Save
             </button>
